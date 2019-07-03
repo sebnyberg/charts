@@ -1,0 +1,25 @@
+** Please be patient while the chart is being deployed **
+
+PostgreSQL can be accessed via port {{ template "postgresql.port" . }} on the following DNS from within your cluster:
+
+    {{ template "postgresql.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local 
+
+To get the password for "{{ template "postgresql.username" . }}" run:
+
+    export POSTGRES_PASSWORD=$(kubectl get secret --namespace {{ .Release.Namespace }} {{ template "postgresql.fullname" . }} -o jsonpath="{.data.postgresql-password}" | base64 --decode)
+
+To connect to your database run the following command:
+
+    kubectl run {{ template "postgresql.fullname" . }}-client --rm --tty -i --restart='Never' --namespace {{ .Release.Namespace }} --image {{ .Values.image }} --env="PGPASSWORD=$POSTGRES_PASSWORD" --command -- psql --host {{ template "postgresql.fullname" . }} -U {{ template "postgresql.username" . }} -d {{ template  "postgresql.database" . }} -p {{ template "postgresql.port" . }}
+
+To open a local port-forward to the database, run:
+
+    export LOCAL_PORT=5432
+    kubectl port-forward svc/{{ template "postgresql.fullname" . }} $LOCAL_PORT:{{ template "postgresql.port" . }}
+    psql postgres://{{ template "postgresql.username" . }}:{{ template "postgresql.password" . }}@localhost:$LOCAL_PORT/{{ template "postgresql.database" . }}
+
+To access the service as a local dns, you can use the kubefwd utility (download from Github)
+
+    sudo kubefwd svc -n {{ .Release.Namespace }}
+    psql postgres://{{ template "postgresql.username" . }}:{{ template "postgresql.password" . }}@{{ template "postgresql.fullname" . }}:{{ template "postgresql.port" . }}/{{ template "postgresql.database" . }}
+

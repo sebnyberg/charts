@@ -1,0 +1,20 @@
+image: mdillon/postgis:11
+imagePullPolicy: IfNotPresent
+
+port: 5432
+
+storageSize: 5Gi
+storageClassName: "default"
+
+memory: 256Mi
+cpu: 250m
+
+global:
+    postgresql:  {}
+    # image:
+
+postgresql:
+    username: dev
+    password: secretpassword
+    database: dev
+    dataDir: /var/lib/postgresql/data/pgdata

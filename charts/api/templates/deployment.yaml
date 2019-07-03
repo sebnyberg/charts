@@ -1,0 +1,57 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "api.fullname" . }}
+  labels:
+    app: {{ template "api.name" . }}
+    chart: {{ template "api.chart" . }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  replicaCount: {{ template "api.replicaCount" . }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: {{ template "api.name" . }}
+      chart: {{ template "api.chart" . }}
+      release: {{ .Release.Name | quote }}
+{{- with .Values.podLabels }}
+{{ toYaml . | indent 6 }}
+{{- end }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "api.name" . }}
+        chart: {{ template "api.chart" . }}
+        release: {{ .Release.Name | quote }}
+{{- with .Values.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+      annotations:
+        sidecar.istio.io.inject: "true"
+{{- with .Values.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+    spec:
+      containers:
+      - name: {{ template "api.name" . }}
+        image: {{ template "api.image" . }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: {{ .Values.command }}
+        args: {{ .Values.args }}
+        ports:
+        - containerPort: {{ template "api.port" . }}
+        resources:
+          requests:
+            cpu: {{ .Values.minCPU }}
+            memory: {{ .Values.minMemory }}
+          limits:
+            cpu: {{ .Values.maxCPU }}
+            memory: {{ .Values.maxMemory }}
+        env:
+{{- with .Values.env }}
+{{ toYaml . | indent 8 }}
+{{- end }}

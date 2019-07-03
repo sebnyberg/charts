@@ -1,0 +1,15 @@
+global: {}
+
+# podLabels: 
+# podAnnotations:
+
+command: []
+args: []
+port: 80
+replicaCount: 1
+image: nginx
+imagePullPolicy: Always
+minCPU: 100m
+minMemory: 128Mi
+maxCPU: 500m
+maxMemory: 756Mi

@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "postgresql.fullname" . }}
+  labels:
+    chart: {{ template "postgresql.chart" . }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  serviceName: {{ template "postgresql.fullname" . }}
+
+  updateStrategy:
+    type: RollingUpdate
+  
+  selector:
+    matchLabels:
+      app: {{ template "postgresql.name" . }}
+      release: {{ .Release.Name | quote }}
+      role: master
+
+  replicas: 1
+  template:
+    metadata:
+      name: {{ template "postgresql.fullname" . }}
+      labels:
+        app: {{ template "postgresql.name" . }}
+        chart: {{ template "postgresql.chart" . }}
+        release: {{ .Release.Name | quote }}
+        heritage: {{ .Release.Service | quote }}
+        role: master
+
+    spec:
+      # volumes:
+        # - name: postgres-config
+        #   configMap:
+        #     name: postgres
+            
+      terminationGracePeriodSeconds: 10
+
+      containers:
+        - name: postgres
+          image: {{ template "postgresql.image" . }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+        
+          ports:
+            - name: postgres
+              containerPort: {{ template "postgresql.port" . }}
+              protocol: TCP
+          
+          resources:
+            requests:
+              memory: {{ .Values.memory }}
+              cpu: {{ .Values.cpu }}
+          
+          env:
+            - name: POSTGRES_USER
+              value: {{ template "postgresql.username" . }}
+          
+            - name: PGUSER
+              value: {{ template "postgresql.username" . }}
+          
+            - name: POSTGRES_DB
+              value: {{ template "postgresql.database" . }}
+            
+            - name: PGDATA
+              value: {{ .Values.postgresql.dataDir }} /var/lib/postgresql/data/pgdata
+          
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "postgresql.fullname" . }}
+                  key: postgresql-password
+              
+            # - name: POD_IP
+            #   valueFrom:
+            #     fieldRef:
+            #       apiVersion: v1
+            #       fieldPath: status.podIP
+              
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready --host 127.0.0.1 
+            failureThreshold: 6
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready --host 127.0.0.1
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data/pgdata
+              name: postgres
+              subPath: postgres-db
+              
+            # - name: postgres-config
+            #   mountPath: /etc/postgresql.conf
+            #   subPath: postgres.conf
+              
+            # - name: postgres-config
+            #   mountPath: /etc/master.conf
+            #   subPath: master.conf
+              
+            # - name: postgres-config
+            #   mountPath: /etc/pg_hba.conf
+            #   subPath: pg_hba.conf
+              
+            # - name: postgres-config
+            #   mountPath: /docker-entrypoint-initdb.d/create-replica-user.sh
+            #   subPath: create-replica-user.sh
+          
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres
+      labels:
+        app: {{ template "postgresql.name" . }}
+        chart: {{ template "postgresql.chart" . }}
+        release: {{ .Release.Name | quote }}
+        heritage: {{ .Release.Service | quote }}
+      
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: {{ .Values.storageClassName }}
+      resources:
+        requests:
+          storage: {{ .Values.storageSize }}
