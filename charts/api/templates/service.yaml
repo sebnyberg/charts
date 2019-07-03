@@ -9,7 +9,7 @@ metadata:
     heritage: {{ .Release.Service | quote }}
 spec:
   ports:
-  - port: {{ .Values.port }}
+  - port: {{ template "api.port" . }}
   selector:
     app: {{ template "api.name" . }} 
     chart: {{ template "api.chart" . }}

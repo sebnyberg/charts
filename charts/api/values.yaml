@@ -3,8 +3,9 @@ global: {}
 # podLabels: 
 # podAnnotations:
 
-command: []
-args: []
+podLabels: 
+# command: []
+# args: []
 port: 80
 replicaCount: 1
 image: nginx

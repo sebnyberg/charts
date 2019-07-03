@@ -7,10 +7,10 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 all:  api postgresql update-index
 
 api:
-	@helm package --save=false --destination public/ charts/api 
+	@helm package --save=false charts/api 
 
 postgresql:
-	@helm package --save=false --destination public/ charts/postgresql
+	@helm package --save=false charts/postgresql
 
 update-index:
-	@helm repo index --url https://sebnyberg.github.io/charts public
+	@helm repo index --url https://sebnyberg.github.io/charts .

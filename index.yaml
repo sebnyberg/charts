@@ -1,0 +1,32 @@
+apiVersion: v1
+entries:
+  api:
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2019-07-03T21:10:44.658884293+02:00"
+    description: A Helm chart for a generic API
+    digest: eb9f0e4a47dd1bc9afe9c01a92ad5b47d785932412327d4c41acf5b0da3a306f
+    name: api
+    urls:
+    - https://sebnyberg.github.io/charts/api-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: 0.1.0
+    created: "2019-07-03T21:10:44.658713101+02:00"
+    description: A Helm chart for a generic API
+    digest: 387323f24aef3b011635ffe3d371b45ee8fa37ba8b6357f4120b8e0e3b7e8b55
+    name: api
+    urls:
+    - https://sebnyberg.github.io/charts/api-0.1.0.tgz
+    version: 0.1.0
+  postgresql:
+  - apiVersion: v1
+    appVersion: "11.0"
+    created: "2019-07-03T21:10:44.659089645+02:00"
+    description: Postgresql chart hosted using an ephemeral StatefulSet
+    digest: 2cf30ce896ff8c12e775efb5378c25be51c4dec7234fdaa73b175c017998f02c
+    name: postgresql
+    urls:
+    - https://sebnyberg.github.io/charts/postgresql-0.1.0.tgz
+    version: 0.1.0
+generated: "2019-07-03T21:10:44.658445466+02:00"

@@ -31,10 +31,6 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-
-{{/*
-Return image
-*/}}
 {{- define "api.image" -}}
 {{- if .Values.global.image }}
     {{- .Values.global.image -}}
@@ -43,9 +39,6 @@ Return image
 {{- end -}}
 {{- end -}}
 
-{{/*
-Return port
-*/}}
 {{- define "api.port" -}}
 {{- if .Values.global.port }}
     {{- .Values.global.port -}}
@@ -54,13 +47,39 @@ Return port
 {{- end -}}
 {{- end -}}
 
-{{/*
-Return replicaCount
-*/}}
 {{- define "api.replicaCount" -}}
 {{- if .Values.global.replicaCount }}
     {{- .Values.global.replicaCount -}}
 {{- else if .Values.replicaCount -}}
     {{- .Values.replicaCount -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "api.minCPU" -}}
+{{- if .Values.global.minCPU }}
+    {{- .Values.global.minCPU -}}
+{{- else if .Values.minCPU -}}
+    {{- .Values.minCPU -}}
+{{- end -}}
+{{- end -}}
+{{- define "api.maxCPU" -}}
+{{- if .Values.global.maxCPU }}
+    {{- .Values.global.maxCPU -}}
+{{- else if .Values.maxCPU -}}
+    {{- .Values.maxCPU -}}
+{{- end -}}
+{{- end -}}
+{{- define "api.minMemory" -}}
+{{- if .Values.global.minMemory }}
+    {{- .Values.global.minMemory -}}
+{{- else if .Values.minMemory -}}
+    {{- .Values.minMemory -}}
+{{- end -}}
+{{- end -}}
+{{- define "api.maxMemory" -}}
+{{- if .Values.global.maxMemory }}
+    {{- .Values.global.maxMemory -}}
+{{- else if .Values.maxMemory -}}
+    {{- .Values.maxMemory -}}
 {{- end -}}
 {{- end -}}

@@ -18,8 +18,10 @@ spec:
       app: {{ template "api.name" . }}
       chart: {{ template "api.chart" . }}
       release: {{ .Release.Name | quote }}
-{{- with .Values.podLabels }}
-{{ toYaml . | indent 6 }}
+{{- if .Values.global.podLabels }}
+{{ toYaml .Values.global.podLabels | indent 6 }}
+{{- else if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 6 }}
 {{- end }}
   template:
     metadata:
@@ -27,31 +29,54 @@ spec:
         app: {{ template "api.name" . }}
         chart: {{ template "api.chart" . }}
         release: {{ .Release.Name | quote }}
-{{- with .Values.podLabels }}
-{{ toYaml . | indent 8 }}
+{{- if .Values.global.podLabels }}
+{{ toYaml .Values.global.podLabels | indent 10 }}
+{{- else if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 10 }}
 {{- end }}
       annotations:
         sidecar.istio.io.inject: "true"
-{{- with .Values.podAnnotations }}
-{{ toYaml . | indent 8 }}
+{{- if .Values.global.podAnnotations }}
+{{ toYaml .Values.global.podAnnotations | indent 10 }}
+{{- else if .Values.podAnnotations }}
+{{ toYaml .Values.podAnnotations | indent 10 }}
 {{- end }}
     spec:
       containers:
       - name: {{ template "api.name" . }}
         image: {{ template "api.image" . }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        command: {{ .Values.command }}
-        args: {{ .Values.args }}
+{{- if or .Values.command .Values.global.command}}
+        command: 
+{{- if .Values.global.command }}
+{{ toYaml .Values.global.command | indent 10 }}
+{{- else if .Values.command }}
+{{ toYaml .Values.command | indent 10 }}
+{{- end }}
+{{- end }}
+
+{{- if or .Values.args .Values.global.args}}
+        args: 
+{{- if .Values.global.args }}
+{{ toYaml .Values.global.args | indent 10 }}
+{{- else if .Values.args }}
+{{ toYaml .Values.args | indent 10 }}
+{{- end }}
+{{- end }}
+
         ports:
         - containerPort: {{ template "api.port" . }}
         resources:
           requests:
-            cpu: {{ .Values.minCPU }}
-            memory: {{ .Values.minMemory }}
+            cpu: {{ template "api.minCPU" . }}
+            memory: {{ template "api.minMemory" . }}
           limits:
-            cpu: {{ .Values.maxCPU }}
-            memory: {{ .Values.maxMemory }}
+            cpu: {{ template "api.maxCPU" . }}
+            memory: {{ template "api.maxMemory" . }}
         env:
-{{- with .Values.env }}
-{{ toYaml . | indent 8 }}
+
+{{- if .Values.global.env }}
+{{ toYaml .Values.global.env | indent 10 }}
+{{- else if .Values.env }}
+{{ toYaml .Values.env | indent 10 }}
 {{- end }}
