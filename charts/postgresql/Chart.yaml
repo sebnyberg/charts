@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "11.0"
 description: Postgresql chart hosted using an ephemeral StatefulSet
 name: postgresql
-version: 0.1.0
+version: 0.1.1
