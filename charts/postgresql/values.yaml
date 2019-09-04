@@ -10,7 +10,9 @@ memory: 256Mi
 cpu: 250m
 
 global:
-    postgresql:  {}
+    postgresql: 
+        extraLabels: 
+            app: postgres
     # image:
 
 postgresql:

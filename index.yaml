@@ -1,22 +1,31 @@
 apiVersion: v1
 entries:
   postgresql:
-    - apiVersion: v1
-      appVersion: "11.0"
-      created: "2019-09-02T16:25:46.103375138+02:00"
-      description: Postgresql chart hosted using an ephemeral StatefulSet
-      digest: 0df61e56cc2c4e55f915df83087f652ccca419252c1bbdea6ddb4152a4cfba78
-      name: postgresql
-      urls:
-        - https://sebnyberg.github.io/charts/postgresql-0.1.1.tgz
-      version: 0.1.1
-    - apiVersion: v1
-      appVersion: "11.0"
-      created: "2019-09-02T16:25:46.103153784+02:00"
-      description: Postgresql chart hosted using an ephemeral StatefulSet
-      digest: b0de6ef72b55ea687e722ddbc5e9c8b08f20285f46c17d10b1fc94ed7e3307f5
-      name: postgresql
-      urls:
-        - https://sebnyberg.github.io/charts/postgresql-0.1.0.tgz
-      version: 0.1.0
-generated: "2019-09-02T16:25:46.102826357+02:00"
+  - apiVersion: v1
+    appVersion: "11.0"
+    created: "2019-09-04T21:49:56.40004426+02:00"
+    description: Postgresql chart hosted using an ephemeral StatefulSet
+    digest: d8a7abeeb8fa836304fa29b0a446c64832d9fa6961d329757f9a0f982f72f7ee
+    name: postgresql
+    urls:
+    - https://sebnyberg.github.io/charts/postgresql-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v1
+    appVersion: "11.0"
+    created: "2019-09-04T21:49:56.39984688+02:00"
+    description: Postgresql chart hosted using an ephemeral StatefulSet
+    digest: 0df61e56cc2c4e55f915df83087f652ccca419252c1bbdea6ddb4152a4cfba78
+    name: postgresql
+    urls:
+    - https://sebnyberg.github.io/charts/postgresql-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v1
+    appVersion: "11.0"
+    created: "2019-09-04T21:49:56.399598153+02:00"
+    description: Postgresql chart hosted using an ephemeral StatefulSet
+    digest: b0de6ef72b55ea687e722ddbc5e9c8b08f20285f46c17d10b1fc94ed7e3307f5
+    name: postgresql
+    urls:
+    - https://sebnyberg.github.io/charts/postgresql-0.1.0.tgz
+    version: 0.1.0
+generated: "2019-09-04T21:49:56.399284609+02:00"

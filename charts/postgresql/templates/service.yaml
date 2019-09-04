@@ -6,6 +6,9 @@ metadata:
     chart: {{ template "postgresql.chart" . }}
     release: {{ .Release.Name | quote }}
     heritage: {{ .Release.Service | quote }}
+{{- if .Values.global.postgresql.extraLabels }}
+{{ toYaml .Values.global.postgresql.extraLabels | indent 4 }}
+{{- end }}
 spec:
   type: ClusterIP
   ports:
@@ -16,3 +19,6 @@ spec:
   selector:
     app: {{ template "postgresql.name" . }}
     release: {{ .Release.Name | quote }}
+{{- if .Values.global.postgresql.extraLabels }}
+{{ toYaml .Values.global.postgresql.extraLabels | indent 4 }}
+{{- end }}
